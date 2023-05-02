@@ -18,6 +18,7 @@ import { throttle } from 'lodash';
 
 let currentTime = null;
 const iframe = document.querySelector('iframe');
+
 const player = new Player(iframe);
 
 player.on(
