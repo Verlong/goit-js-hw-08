@@ -13,7 +13,7 @@
 // Зроби так, щоб сховище оновлювалось не частіше, ніж раз на 500 мілісекунд.
 // Для цього додай до проекту і використовуй бібліотеку lodash.throttle.
 import { throttle } from 'lodash';
-
+import { saveToLS, loadFromLS } from './helpers';
 //const submitBtn = document.querySelector('button');
 
 const refs = {
@@ -34,28 +34,14 @@ refs.feedbackForm.addEventListener('submit', event => {
 
 let formData = loadFromLS('feedback-form-state') || {};
 
-refs.feedbackForm.addEventListener('input', throttle(inputFormValue, 3000));
+refs.feedbackForm.addEventListener('input', throttle(inputFormValue, 500));
 
 function inputFormValue(event) {
   const value = event.target.value;
   const key = event.target.name;
-  console.log(key, value);
+  // console.log(key, value);
   formData[key] = value;
   saveToLS('feedback-form-state', formData);
-}
-
-function saveToLS(key, value) {
-  const json = JSON.stringify(value);
-  localStorage.setItem(key, json);
-}
-
-function loadFromLS(key) {
-  const data = localStorage.getItem(key);
-  try {
-    return JSON.parse(data);
-  } catch {
-    return data;
-  }
 }
 
 refs.feedbackForm.elements.email.value = formData?.email || '';
